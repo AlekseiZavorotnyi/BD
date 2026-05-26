@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: hrm_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: hrm_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - hrm_pgdata:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: hrm_api
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "postgresql+asyncpg://postgres:postgres@db:5432/hrm_db"
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+volumes:
+  hrm_pgdata:
