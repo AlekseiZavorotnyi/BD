@@ -3,7 +3,6 @@ from datetime import date
 from pydantic import BaseModel, ConfigDict, Field
 
 
-# Employee
 class EmployeeBase(BaseModel):
     first_name: str = Field(..., min_length=1, max_length=50)
     last_name: str = Field(..., min_length=1, max_length=50)
@@ -25,7 +24,6 @@ class EmployeeRead(EmployeeBase):
     employee_id: int
 
 
-# Dogovors
 class DogovorBase(BaseModel):
     position: str = Field(..., min_length=1, max_length=100)
     start_date: date
@@ -53,7 +51,6 @@ class DogovorRead(DogovorBase):
     dogovor_id: int
 
 
-# Vacation
 class VacationBase(BaseModel):
     employee_id: int
     start_date: date
@@ -77,7 +74,6 @@ class VacationRead(VacationBase):
     vacation_id: int
 
 
-# WorkTime
 class WorkTimeBase(BaseModel):
     employee_id: int
     work_date: date
@@ -99,7 +95,6 @@ class WorkTimeRead(WorkTimeBase):
     worktime_id: int
 
 
-# Для процедур
 class AddWorktimeEntryRequest(BaseModel):
     employee_id: int
     work_date: date

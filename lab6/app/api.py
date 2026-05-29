@@ -89,13 +89,6 @@ async def get_object_or_404(db: AsyncSession, model, pk_field, pk_value):
     return obj
 
 
-@router.get("/ping")
-async def ping():
-    return {"ping": "pong"}
-
-
-# ---------- Employee CRUD ----------
-
 @router.get("/employees", response_model=list[EmployeeRead])
 async def get_employees(
     page: int = Query(1, ge=1),
@@ -135,7 +128,7 @@ async def create_employee(data: EmployeeCreate, db: AsyncSession = Depends(get_d
     return emp
 
 
-@router.put("/employees/{employee_id}", response_model=EmployeeRead)
+@router.patch("/employees/{employee_id}", response_model=EmployeeRead)
 async def update_employee(
     employee_id: int,
     data: EmployeeUpdate,
@@ -156,8 +149,6 @@ async def delete_employee(employee_id: int, db: AsyncSession = Depends(get_db)):
     await commit_or_rollback(db)
     return {"message": "Сотрудник удален"}
 
-
-# ---------- Dogovors CRUD ----------
 
 @router.get("/dogovors", response_model=list[DogovorRead])
 async def get_dogovors(
@@ -205,7 +196,7 @@ async def create_dogovor(data: DogovorCreate, db: AsyncSession = Depends(get_db)
     return d
 
 
-@router.put("/dogovors/{dogovor_id}", response_model=DogovorRead)
+@router.patch("/dogovors/{dogovor_id}", response_model=DogovorRead)
 async def update_dogovor(
     dogovor_id: int,
     data: DogovorUpdate,
@@ -226,8 +217,6 @@ async def delete_dogovor(dogovor_id: int, db: AsyncSession = Depends(get_db)):
     await commit_or_rollback(db)
     return {"message": "Договор удален"}
 
-
-# ---------- Vacation CRUD ----------
 
 @router.get("/vacations", response_model=list[VacationRead])
 async def get_vacations(
@@ -274,7 +263,7 @@ async def create_vacation(data: VacationCreate, db: AsyncSession = Depends(get_d
     return v
 
 
-@router.put("/vacations/{vacation_id}", response_model=VacationRead)
+@router.patch("/vacations/{vacation_id}", response_model=VacationRead)
 async def update_vacation(
     vacation_id: int,
     data: VacationUpdate,
@@ -295,8 +284,6 @@ async def delete_vacation(vacation_id: int, db: AsyncSession = Depends(get_db)):
     await commit_or_rollback(db)
     return {"message": "Отпуск удален"}
 
-
-# ---------- WorkTime CRUD ----------
 
 @router.get("/worktime", response_model=list[WorkTimeRead])
 async def get_worktime(
@@ -341,7 +328,7 @@ async def create_worktime(data: WorkTimeCreate, db: AsyncSession = Depends(get_d
     return w
 
 
-@router.put("/worktime/{worktime_id}", response_model=WorkTimeRead)
+@router.patch("/worktime/{worktime_id}", response_model=WorkTimeRead)
 async def update_worktime(
     worktime_id: int,
     data: WorkTimeUpdate,
@@ -362,8 +349,6 @@ async def delete_worktime(worktime_id: int, db: AsyncSession = Depends(get_db)):
     await commit_or_rollback(db)
     return {"message": "Запись рабочего времени удалена"}
 
-
-# ---------- Views ----------
 
 @router.get("/views/department-stats")
 async def get_department_stats(db: AsyncSession = Depends(get_db)):
@@ -388,8 +373,6 @@ async def get_employee_hours_summary(db: AsyncSession = Depends(get_db)):
     )
     return [dict(row._mapping) for row in result.fetchall()]
 
-
-# ---------- Functions ----------
 
 @router.get("/employees/{employee_id}/age")
 async def get_employee_age(employee_id: int, db: AsyncSession = Depends(get_db)):
@@ -422,8 +405,6 @@ async def get_employee_total_hours(employee_id: int, db: AsyncSession = Depends(
             detail=f"Ошибка при вызове fn_get_total_hours: {str(e)}",
         )
 
-
-# ---------- Procedures ----------
 
 @router.post("/worktime/add-entry")
 async def add_worktime_entry(
@@ -491,8 +472,6 @@ async def update_salary(
             detail=f"Ошибка при вызове pr_update_salary: {str(e)}",
         )
 
-
-# ---------- Reports ----------
 
 @router.get("/reports/salary-by-department")
 async def report_salary_by_department(db: AsyncSession = Depends(get_db)):
